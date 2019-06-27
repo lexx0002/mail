@@ -16,8 +16,8 @@ if __name__ == '__main__':
             self.header = ''
             self.msg = ''
             self.ms = ''
-            self.GMAIL_SMTP = "smtp.gmail.com"
-            self.GMAIL_IMAP = "imap.gmail.com"
+            self.gmail_smtp = "smtp.gmail.com"
+            self.gmail_imap = "imap.gmail.com"
             self.mail = ''
             self.criterion = ''
             self.latest_email_uid = ''
@@ -42,7 +42,7 @@ if __name__ == '__main__':
                 self.msg['Subject'] = self.subject
                 self.msg.attach(MIMEText(self.message))
 
-                self.ms = smtplib.SMTP(self.GMAIL_SMTP, 587)
+                self.ms = smtplib.SMTP(self.gmail_smtp, 587)
                 # identify ourselves to smtp gmail client
                 self.ms.ehlo()
                 # secure our email with tls encryption
@@ -52,12 +52,14 @@ if __name__ == '__main__':
 
                 self.ms.login(self.login, self.password)
 
+                ######
+
                 self.ms.sendmail(self.login, self.recipients, self.msg.as_string())
                 self.ms.quit()
                 print('Mail send.')
 
         def recieve_messages(self): #как это получение вообще чет без понятия как работает
-            self.mail = imaplib.IMAP4_SSL(self.GMAIL_IMAP)
+            self.mail = imaplib.IMAP4_SSL(self.gmail_imap)
             self.mail.login(self.login, self.password)
             self.mail.list()
             self.mail.select("inbox")
