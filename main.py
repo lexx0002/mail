@@ -4,9 +4,9 @@ import imaplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-if __name__ == '__main__':
 
-    class Gmail:
+class MailSender:
+    if __name__ == '__main__':
         def __init__(self, login, password):
             self.login = login
             self.password = password
