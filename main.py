@@ -26,37 +26,33 @@ class MailSender:
             self.raw_email = ''
             self.email_message = ''
 
-        def write_email(self, subject, recipients, message, header=None):
+        def send_message(self, subject, recipients, message, header=None):
             self.subject = subject
             self.recipients = recipients
             self.message = message
             self.header = header
 
-        def send_message(self):
-            if not self.subject or not self.recipients or not self.message:
-                print('You need to write email before send it.')
-            else:
-                self.msg = MIMEMultipart()
-                self.msg['From'] = self.login
-                self.msg['To'] = ', '.join(self.recipients)
-                self.msg['Subject'] = self.subject
-                self.msg.attach(MIMEText(self.message))
+            self.msg = MIMEMultipart()
+            self.msg['From'] = self.login
+            self.msg['To'] = ', '.join(self.recipients)
+            self.msg['Subject'] = self.subject
+            self.msg.attach(MIMEText(self.message))
 
-                self.ms = smtplib.SMTP(self.gmail_smtp, 587)
-                # identify ourselves to smtp gmail client
-                self.ms.ehlo()
-                # secure our email with tls encryption
-                self.ms.starttls()
-                # re-identify ourselves as an encrypted connection
-                self.ms.ehlo()
+            self.ms = smtplib.SMTP(self.gmail_smtp, 587)
+            # identify ourselves to smtp gmail client
+            self.ms.ehlo()
+            # secure our email with tls encryption
+            self.ms.starttls()
+            # re-identify ourselves as an encrypted connection
+            self.ms.ehlo()
 
-                self.ms.login(self.login, self.password)
+            self.ms.login(self.login, self.password)
 
-                ######
+            ######
 
-                self.ms.sendmail(self.login, self.recipients, self.msg.as_string())
-                self.ms.quit()
-                print('Mail send.')
+            self.ms.sendmail(self.login)
+            self.ms.quit()
+            print('Mail send.')
 
         def recieve_messages(self): #как это получение вообще чет без понятия как работает
             self.mail = imaplib.IMAP4_SSL(self.gmail_imap)
@@ -71,4 +67,3 @@ class MailSender:
             self.raw_email = self.data[0][1]
             self.email_message = email.message_from_bytes(self.raw_email)
             self.mail.logout()
-
